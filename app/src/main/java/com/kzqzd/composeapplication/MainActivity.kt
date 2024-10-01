@@ -12,9 +12,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,16 +32,14 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             ComposeApplicationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ListItem(
-                        messages = messageList,
+                val snackbarHostState = SnackbarHostState()
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState)}) { innerPadding ->
+                    val viewModel = MainViewModel(NetworkConnectivityServiceImpl(context = this))
+                    Greeting(viewModel = viewModel,
                         modifier = Modifier.padding(innerPadding),
-                        viewModel = MainViewModel(),
-                    ){
-                        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(it)
-                        AppCompatDelegate.setApplicationLocales(appLocale)
-
-                    }
+                        snackbarHostState = snackbarHostState
+                        )
 
                 }
             }
@@ -45,63 +48,19 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-
-
-    Button(modifier = modifier, onClick = {
-
-    }) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ComposeApplicationTheme {
-        ListItem(
-            messages = messageList,
-            modifier = Modifier
-        ){
-           val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(it)
-            AppCompatDelegate.setApplicationLocales(appLocale)
-
+fun Greeting(viewModel: MainViewModel,
+             modifier: Modifier = Modifier,
+             snackbarHostState: SnackbarHostState) {
+    val networkStatus by viewModel.networkStatus.collectAsState()
+    if (networkStatus == NetworkStatus.Disconnected) {
+        LaunchedEffect(key1 = networkStatus) {
+            snackbarHostState.showSnackbar("you are offline")
         }
     }
-}
-val messageList: List<String> = mutableListOf(
-    "vn",
-    "th"
-)
 
-@Composable
-fun MessageView(message: String, onclick:(String)-> Unit) {
-    TextButton(onClick = { onclick(message) }) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = message
-        )
-    }
-
+    Text(text = "Connectivity Service")
 }
-@Composable
-fun ListItem(viewModel: MainViewModel = MainViewModel(), messages: List<String>, modifier: Modifier, onclick:(String)-> Unit) {
-    LazyColumn(modifier = Modifier) {
-        item {
-            Text(stringResource(id = R.string.hello))
-        }
-        items(messages) { msg ->
-            MessageView(message = msg, onclick)
-        }
 
-        item {
-            Text(text = stringResource(id = viewModel.language ))
-        }
-    }
-}
+
 
 
