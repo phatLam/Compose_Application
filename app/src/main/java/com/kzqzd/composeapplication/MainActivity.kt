@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.LocaleListCompat
 import com.kzqzd.composeapplication.ui.theme.ComposeApplicationTheme
+import com.kzqzd.composeapplication.ui.theme.LocalExColorScheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +85,7 @@ fun MessageView(message: String, onclick:(String)-> Unit) {
     TextButton(onClick = { onclick(message) }) {
         Text(
             modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.primary,
             text = message
         )
     }
