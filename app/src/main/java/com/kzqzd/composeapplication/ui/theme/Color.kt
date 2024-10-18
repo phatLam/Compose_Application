@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
+val Purple80 = Color(0xFFFC0303)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 
@@ -25,14 +25,14 @@ data class ExtendedColorScheme(
 
 val extendedLight = ExtendedColorScheme(
     extra = ColorFamily(
-        backgroundColor = Purple80,
+        backgroundColor = Color(0xFFFC0303),
         onContainerColor = PurpleGrey80
     )
 )
 
 val extendedDark = ExtendedColorScheme(
     extra = ColorFamily(
-        backgroundColor = Purple40,
+        backgroundColor = Color(0xFF6650a4),
         onContainerColor = PurpleGrey40
     )
 )

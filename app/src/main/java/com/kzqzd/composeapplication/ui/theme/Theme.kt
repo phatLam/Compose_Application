@@ -51,12 +51,14 @@ fun ComposeApplicationTheme(
         else -> LightColorScheme
     }
     val extendedColorScheme = if (darkTheme) extendedDark else extendedLight
-    CompositionLocalProvider {
+    CompositionLocalProvider (
         LocalExColorScheme provides extendedColorScheme
+    ){
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
     }
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+
 }

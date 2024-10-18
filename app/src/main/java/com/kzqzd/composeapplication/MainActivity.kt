@@ -85,7 +85,7 @@ fun MessageView(message: String, onclick:(String)-> Unit) {
     TextButton(onClick = { onclick(message) }) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.primary,
+            color = LocalExColorScheme.current.extra.backgroundColor,
             text = message
         )
     }
